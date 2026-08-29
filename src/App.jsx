@@ -37,6 +37,8 @@ function App() {
   const [users, setUsers] = useState([])
   const [newUser, setNewUser] = useState({ name: '', username: '', password: '' })
   const [userMessage, setUserMessage] = useState('')
+  const [shareUrl, setShareUrl] = useState('')
+  const [pendingInvite, setPendingInvite] = useState(null)
 
   const [form, setForm] = useState(defaultForm)
   const [questions, setQuestions] = useState([])
@@ -66,6 +68,40 @@ function App() {
     setUsers(initialUsers)
   }, [])
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const username = params.get('username')?.trim()
+    const password = params.get('password')?.trim()
+    const role = params.get('role') === 'admin' ? 'admin' : 'user'
+
+    if (username && password) {
+      setSelectedRole(role)
+      setLoginData({ username, password })
+      setPendingInvite({ username, password, role })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!pendingInvite || !users.length || activeUser) return
+
+    const matchedUser = users.find(
+      (user) =>
+        user.username === pendingInvite.username &&
+        user.password === pendingInvite.password &&
+        (pendingInvite.role === 'admin' ? user.role === 'admin' : user.role === 'user'),
+    )
+
+    if (!matchedUser) {
+      setLoginError('This invite link is invalid or the credentials are not available.')
+      return
+    }
+
+    setActiveUser(matchedUser)
+    setLoginError('')
+    setPendingInvite(null)
+    window.history.replaceState({}, '', window.location.pathname)
+  }, [pendingInvite, users, activeUser])
+
   const progress = useMemo(() => {
     if (!questions.length) return 0
     return ((currentIndex + 1) / questions.length) * 100
@@ -79,6 +115,28 @@ function App() {
   const handleNewUserChange = (event) => {
     const { name, value } = event.target
     setNewUser((previous) => ({ ...previous, [name]: value }))
+  }
+
+  const buildShareLink = (username, password) => {
+    const params = new URLSearchParams({
+      role: 'user',
+      username,
+      password,
+    })
+
+    return `${window.location.origin}?${params.toString()}`
+  }
+
+  const copyShareLink = async () => {
+    if (!shareUrl) return
+
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setUserMessage('Share link copied to clipboard.')
+    } catch (error) {
+      console.error('Copy failed:', error)
+      setUserMessage('Copy failed. You can still use the link below.')
+    }
   }
 
   const handleLogin = (event) => {
@@ -139,7 +197,11 @@ function App() {
     setNewUser({ name: '', username: '', password: '' })
     setSelectedRole('user')
     setLoginData({ username: trimmedUsername, password: trimmedPassword })
-    setUserMessage(`User created successfully. Share these credentials: ${trimmedUsername} / ${trimmedPassword}`)
+    const generatedLink = buildShareLink(trimmedUsername, trimmedPassword)
+    setShareUrl(generatedLink)
+    setUserMessage(
+      `User created successfully. Share these credentials: ${trimmedUsername} / ${trimmedPassword}`,
+    )
   }
 
   const logout = () => {
@@ -407,6 +469,18 @@ function App() {
             </form>
 
             {userMessage && <div className="alert info">{userMessage}</div>}
+
+            {shareUrl && (
+              <div className="share-box">
+                <p>Student invite link</p>
+                <a href={shareUrl} target="_blank" rel="noreferrer">
+                  {shareUrl}
+                </a>
+                <button type="button" className="secondary" onClick={copyShareLink}>
+                  Copy Link
+                </button>
+              </div>
+            )}
 
             <div className="user-list">
               <h3>Registered Student Users</h3>
