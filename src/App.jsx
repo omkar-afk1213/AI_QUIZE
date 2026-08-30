@@ -290,7 +290,7 @@ function App() {
           <div className="login-header">
             <div className="brand-mark">AI</div>
             <div>
-              <p className="eyebrow">College Quiz Portal</p>
+              <p className="eyebrow">College Quiz Portal 🎓</p>
               <h1>QuizGen AI</h1>
             </div>
           </div>
@@ -301,14 +301,14 @@ function App() {
               className={selectedRole === 'admin' ? 'role-btn active' : 'role-btn'}
               onClick={() => setSelectedRole('admin')}
             >
-              Admin Login
+              👨‍💼 Admin Login
             </button>
             <button
               type="button"
               className={selectedRole === 'user' ? 'role-btn active' : 'role-btn'}
               onClick={() => setSelectedRole('user')}
             >
-              User Login
+              👤 Student Login
             </button>
           </div>
 
@@ -320,6 +320,7 @@ function App() {
                 value={loginData.username}
                 onChange={handleLoginChange}
                 placeholder="Enter username"
+                autoFocus
               />
             </label>
 
@@ -337,13 +338,13 @@ function App() {
             {loginError && <div className="alert danger">{loginError}</div>}
 
             <div className="demo-creds">
-              <strong>Admin access:</strong>
-              <span>admin / admin123</span>
-              <small>After admin creates a student account, switch to User Login and use that username/password.</small>
+              <strong>📌 Admin Demo Access:</strong>
+              <span>Username: admin | Password: admin123</span>
+              <small>👉 After admin creates a student account, switch to Student Login and use those credentials.</small>
             </div>
 
             <button type="submit" className="primary login-btn">
-              Login as {selectedRole === 'admin' ? 'Admin' : 'User'}
+              Login as {selectedRole === 'admin' ? 'Admin' : 'Student'}
             </button>
           </form>
         </div>
