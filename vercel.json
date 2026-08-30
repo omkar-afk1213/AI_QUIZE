@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "env": {
+    "OPENROUTER_API_KEY": "@openrouter_api_key",
+    "OPENROUTER_MODEL": "openai/gpt-4o-mini"
+  }
+}
