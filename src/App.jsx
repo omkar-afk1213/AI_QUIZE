@@ -290,7 +290,7 @@ function App() {
           <div className="login-header">
             <div className="brand-mark">AI</div>
             <div>
-              <p className="eyebrow">College Quiz Portal 🎓</p>
+              <p className="eyebrow">🎓 College Quiz Portal - v2.1 FIXED</p>
               <h1>QuizGen AI</h1>
             </div>
           </div>
