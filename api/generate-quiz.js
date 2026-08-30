@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const basePrompt = `You are an expert quiz generator. Return valid JSON only with this structure:
 {
@@ -49,7 +49,7 @@ function buildFallbackQuestions(topic, difficulty, count) {
   return { questions };
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -120,4 +120,4 @@ export default async function handler(req, res) {
     const fallback = buildFallbackQuestions(topic, difficulty, count);
     res.status(200).json(fallback);
   }
-}
+};

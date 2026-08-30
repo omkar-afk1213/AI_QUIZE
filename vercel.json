@@ -1,6 +1,12 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
   "env": {
     "OPENROUTER_API_KEY": "@openrouter_api_key",
     "OPENROUTER_MODEL": "openai/gpt-4o-mini"

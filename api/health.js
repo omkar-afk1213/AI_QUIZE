@@ -1,4 +1,4 @@
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,4 +14,4 @@ export default function handler(req, res) {
     message: 'AI Quiz backend is running on Vercel',
     timestamp: new Date().toISOString(),
   });
-}
+};
