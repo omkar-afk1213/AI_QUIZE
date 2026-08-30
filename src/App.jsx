@@ -338,9 +338,10 @@ function App() {
             {loginError && <div className="alert danger">{loginError}</div>}
 
             <div className="demo-creds">
-              <strong>📌 Admin Demo Access:</strong>
-              <span>Username: admin | Password: admin123</span>
-              <small>👉 After admin creates a student account, switch to Student Login and use those credentials.</small>
+              <strong>📌 Admin Demo Credentials:</strong>
+              <span>📧 Username: <code>admin</code></span>
+              <span>🔑 Password: <code>admin123</code></span>
+              <small>👉 After admin creates a student account, switch to Student Login tab and use those credentials.</small>
             </div>
 
             <button type="submit" className="primary login-btn">
