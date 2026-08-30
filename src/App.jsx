@@ -51,6 +51,13 @@ function App() {
 
   const currentQuestion = questions[currentIndex]
 
+  // Debug logging
+  useEffect(() => {
+    console.log('🔍 DEBUG: activeUser state:', activeUser)
+    console.log('🔍 DEBUG: users in state:', users.length, 'users')
+    console.log('🔍 DEBUG: should show login?', !activeUser ? 'YES' : 'NO')
+  }, [activeUser, users])
+
   useEffect(() => {
     try {
       const savedUsers = localStorage.getItem(STORAGE_KEY)
