@@ -64,17 +64,25 @@ app.post('/api/generate-quiz', async (req, res) => {
   try {
     const { topic = 'Artificial Intelligence', difficulty = 'Medium', count = 5 } = req.body || {};
 
-    const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = openaiKey || openrouterKey;
 
     if (!apiKey) {
       const fallback = buildFallbackQuestions(topic, difficulty, count);
       return res.json(fallback);
     }
 
+    // Use OpenAI API if available, otherwise use OpenRouter
+    const isOpenAI = !!openaiKey;
+    const endpoint = isOpenAI 
+      ? 'https://api.openai.com/v1/chat/completions'
+      : 'https://openrouter.ai/api/v1/chat/completions';
+
     const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
+      endpoint,
       {
-        model: 'openai/gpt-4o-mini',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
